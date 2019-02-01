@@ -13163,21 +13163,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="n">appName</span><span class="o">=</span><span class="s2">&quot;achauha3&quot;</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize Spark Context</span>
-<span class="c1"># sc = SparkContext.getOrCreate()</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="n">appName</span><span class="o">=</span><span class="s2">&quot;achauha3&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13195,7 +13182,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import test files from location into RDD variables</span>
@@ -13223,7 +13210,7 @@ User 2069337 has a total play count of 393515 and a mean play count of 1519.</co
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split a sequence into seperate entities and store as int</span>
@@ -13304,7 +13291,7 @@ User 2069337 has a total play count of 393515 and a mean play count of 1519.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split the &#39;userArtistData&#39; dataset into training, validation and test datasets. Store in cache for frequent access</span>
@@ -13364,10 +13351,10 @@ User 2069337 has a total play count of 393515 and a mean play count of 1519.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">global_artists</span> <span class="o">=</span> <span class="n">userArtistData</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">global_artists</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">userArtistData</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 <span class="n">global_train_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">trainData</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
                                     <span class="o">.</span><span class="n">groupByKey</span><span class="p">()</span>
                                     <span class="o">.</span><span class="n">mapValues</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
@@ -13381,7 +13368,7 @@ User 2069337 has a total play count of 393515 and a mean play count of 1519.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">modelEval</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
@@ -13404,13 +13391,14 @@ User 2069337 has a total play count of 393515 and a mean play count of 1519.
     <span class="c1"># For each user, calculate the prediction score i.e. similarity between predicted and actual artists</span>
     <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dataset_users</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">train_user_preferences</span><span class="p">:</span>
-            <span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">train_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">recommendProducts</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]))))</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">train_user_preferences</span><span class="p">:</span>
-            <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">train_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        <span class="n">non_train_artists</span> <span class="o">=</span> <span class="n">artists</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">train_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predictAll</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">non_train_artists</span><span class="p">)</span>
+                                       <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
+                          <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                          <span class="o">.</span><span class="n">sortByKey</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                          <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                          <span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">])))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset_user_preferences</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
         
     <span class="c1"># Print average score of the model for all users for the specified rank</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The model score for rank </span><span class="si">{}</span><span class="s1"> is ~</span><span class="si">{:.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
@@ -13438,7 +13426,7 @@ The model score for rank 20 is ~0.090248</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rankList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">]</span>
@@ -13461,9 +13449,9 @@ The model score for rank 20 is ~0.090248</code></pre>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The model score for rank 2 is ~0.068846
-The model score for rank 10 is ~0.065888
-The model score for rank 20 is ~0.038368
+<pre>The model score for rank 2 is ~0.080849
+The model score for rank 10 is ~0.090730
+The model score for rank 20 is ~0.082461
 </pre>
 </div>
 </div>
@@ -13483,7 +13471,7 @@ Step below takes 1 minute to run. Uncomment last line if you wish to run and cal
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bestModel</span> <span class="o">=</span> <span class="n">ALS</span><span class="o">.</span><span class="n">trainImplicit</span><span class="p">(</span><span class="n">trainData</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">345</span><span class="p">)</span>
@@ -13504,7 +13492,7 @@ Step below takes 1 minute to run. Uncomment last line if you wish to run and cal
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The model score for rank 10 is ~0.043444
+<pre>The model score for rank 10 is ~0.060793
 </pre>
 </div>
 </div>
@@ -13529,7 +13517,7 @@ Artist 4: Counting Crows</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Find the top 5 artists for a particular user and list their names</span>
