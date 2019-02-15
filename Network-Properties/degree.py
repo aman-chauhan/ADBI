@@ -7,25 +7,29 @@ from pyspark.sql.types import *
 from graphframes import *
 
 sc = SparkContext("local", "degree.py")
+sc.setLogLevel("ERROR")
 sqlContext = SQLContext(sc)
 
 
 def simple(g):
     ''' return the simple closure of the graph as a graphframe.'''
     # Extract edges and make a data frame of "flipped" edges
-    # YOUR CODE HERE
-
+    e = g.edges.map(lambda k: (k[0], k[1]))
+    r = e.map(lambda k: (k[1], k[0]))
     # Combine old and new edges. Distinctify to eliminate multi-edges
     # Filter to eliminate self-loops.
     # A multigraph with loops will be closured to a simple graph
     # If we try to undirect an undirected graph, no harm done
-    # YOUR CODE HERE
+    e = e.union(r).distinct().filter(lambda k: k[0] != k[1])
+    e = sqlContext.createDataFrame(e, ['src', 'dst'])
+    return GraphFrame(g.vertices, e)
 
 
 def degreedist(g):
     ''' Return a data frame of the degree distribution of each edge in
         the provided graphframe '''
     # Generate a DF with degree,count
+    return g.edges.groupBy('src').count().withColumnRenamed('count', 'degree').drop('src').groupBy('degree').count()
 
 
 def readFile(filename, large, sqlContext=sqlContext):
@@ -43,6 +47,7 @@ def readFile(filename, large, sqlContext=sqlContext):
         delim = ","
 
     lines = lines.map(lambda k: k.strip().split(delim)).map(lambda k: (int(k[0]), int(k[1])))
+
     # Extract pairs from input file and convert to data frame matching
     # schema for graphframe edges.
     e = sqlContext.createDataFrame(lines, ['src', 'dst'])
@@ -50,7 +55,7 @@ def readFile(filename, large, sqlContext=sqlContext):
     # Extract all endpoints from input file (hence flatmap) and create
     # data frame containing all those node names in schema matching
     # graphframe vertices
-    v = sqlContext.createDataFrame(lines.flatMap(lambda k: k).distinct(), ['id'])
+    v = sqlContext.createDataFrame(lines.flatMap(lambda k: k).distinct().map(lambda k: (k, )), ['id'])
 
     # Create graphframe g from the vertices and edges.
     g = GraphFrame(v, e)
@@ -72,17 +77,17 @@ if len(sys.argv) > 1:
 
     print("Original graph has " + str(g.edges.count()) + " directed edges and " + str(g.vertices.count()) + " vertices.")
 
-    # g2 = simple(g)
-    # print("Simple graph has " + str(g2.edges.count() / 2) + " undirected edges.")
-    #
-    # distrib = degreedist(g2)
-    # distrib.show()
-    # nodecount = g2.vertices.count()
-    # print("Graph has " + str(nodecount) + " vertices.")
-    #
-    # out = filename.split("/")[-1]
-    # print("Writing distribution to file " + out + ".csv")
-    # distrib.toPandas().to_csv(out + ".csv")
+    g2 = simple(g)
+    print("Simple graph has " + str(g2.edges.count() / 2) + " undirected edges.")
+
+    distrib = degreedist(g2)
+    distrib.show()
+    nodecount = g2.vertices.count()
+    print("Graph has " + str(nodecount) + " vertices.")
+
+    out = filename.split("/")[-1]
+    print("Writing distribution to file " + out + ".csv")
+    distrib.toPandas().to_csv(out + ".csv")
 
 # Otherwise, generate some random graphs.
 else:
