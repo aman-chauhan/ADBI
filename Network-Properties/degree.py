@@ -29,7 +29,7 @@ def degreedist(g):
     ''' Return a data frame of the degree distribution of each edge in
         the provided graphframe '''
     # Generate a DF with degree,count
-    return g.edges.groupBy('src').count().withColumnRenamed('count', 'degree').drop('src').groupBy('degree').count()
+    return g.edges.groupBy('src').count().withColumnRenamed('count', 'degree').drop('src').groupBy('degree').count().sort('degree')
 
 
 def readFile(filename, large, sqlContext=sqlContext):
