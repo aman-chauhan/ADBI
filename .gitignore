@@ -6,3 +6,5 @@
 *.Rhistory
 *.RProj
 .Rproj.user
+*.pyc
+*/data/*
